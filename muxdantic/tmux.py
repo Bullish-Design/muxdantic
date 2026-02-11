@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import subprocess
+import shlex
 from typing import Any
 
 from muxdantic.errors import MuxdanticSubprocessError
@@ -14,11 +15,15 @@ PANE_FORMAT = "#{pane_id}\t#{pane_dead}\t#{pane_dead_status}\t#{pane_dead_time}"
 
 def _run_program(program: str, args: list[str], server: TmuxServerArgs) -> str:
     cmd = [program, *server.to_tmux_args(), *args]
+    return _run_command(program, cmd, [*server.to_tmux_args(), *args])
+
+
+def _run_command(program: str, cmd: list[str], error_args: list[str]) -> str:
     completed = subprocess.run(cmd, capture_output=True, text=True)
     if completed.returncode != 0:
         raise MuxdanticSubprocessError(
             program=program,
-            args=[*server.to_tmux_args(), *args],
+            args=error_args,
             returncode=completed.returncode,
             stderr=completed.stderr,
         )
@@ -30,7 +35,13 @@ def tmux(args: list[str], server: TmuxServerArgs) -> str:
 
 
 def tmuxp(args: list[str], server: TmuxServerArgs) -> str:
-    return _run_program("tmuxp", args, server)
+    tmux_command = _build_tmux_command(server)
+    cmd = ["tmuxp", "--tmux-command", tmux_command, *args]
+    return _run_command("tmuxp", cmd, ["--tmux-command", tmux_command, *args])
+
+
+def _build_tmux_command(server: TmuxServerArgs) -> str:
+    return shlex.join(["tmux", *server.to_tmux_args()])
 
 
 def has_session(session_name: str, server: TmuxServerArgs) -> bool:
