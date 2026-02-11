@@ -9,6 +9,7 @@ authors = [{ name = "Bullish Design", email = "BullishDesignEngineering@gmail.co
 dependencies = [
   "pydantic>=2",
   "pyyaml",
+  "tmuxp>=1.64.0",
 ]
 
 [project.optional-dependencies]

@@ -5,9 +5,10 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ 
-    pkgs.git 
-    pkgs.uv
+  packages = with pkgs; [ 
+    git 
+    uv
+    tmux
     ];
 
   # https://devenv.sh/languages/
