@@ -11,6 +11,7 @@ from uuid import uuid4
 import pytest
 
 from muxdantic.ensure import ensure
+from muxdantic.errors import MuxdanticSubprocessError
 from muxdantic.jobs import kill, list_jobs, run
 from muxdantic.models import EnsureRequest, RunRequest, TmuxServerArgs
 
@@ -101,7 +102,11 @@ def test_tmux_flow_uses_isolated_socket_and_library_api(tmp_path: Path) -> None:
         killed = kill(workspace, server, job_id=None, tag=None, all_jobs=True)
         assert failure_ref.window_id in killed.killed
     finally:
-        kill(workspace, server, job_id=None, tag=None, all_jobs=True)
+        # Cleanup is best-effort because setup can fail before the isolated server exists.
+        try:
+            kill(workspace, server, job_id=None, tag=None, all_jobs=True)
+        except MuxdanticSubprocessError:
+            pass
         subprocess.run(
             ["tmux", "-L", socket_name, "kill-session", "-t", session_name],
             capture_output=True,
