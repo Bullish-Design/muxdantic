@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import subprocess
-import shlex
 from typing import Any
 
 from muxdantic.errors import MuxdanticSubprocessError
@@ -39,13 +38,12 @@ def tmuxp(args: list[str], server: TmuxServerArgs) -> str:
         raise ValueError("tmuxp args must include a subcommand")
 
     subcommand, *rest = args
-    tmux_command = _build_tmux_command(server)
-    cmd = ["tmuxp", subcommand, "--tmux-command", tmux_command, *rest]
-    return _run_command("tmuxp", cmd, [subcommand, "--tmux-command", tmux_command, *rest])
+    if subcommand == "load":
+        cmd = ["tmuxp", "load", *server.to_tmux_args(), *rest]
+        return _run_command("tmuxp", cmd, ["load", *server.to_tmux_args(), *rest])
 
-
-def _build_tmux_command(server: TmuxServerArgs) -> str:
-    return shlex.join(["tmux", *server.to_tmux_args()])
+    cmd = ["tmuxp", subcommand, *rest]
+    return _run_command("tmuxp", cmd, [subcommand, *rest])
 
 
 def has_session(session_name: str, server: TmuxServerArgs) -> bool:

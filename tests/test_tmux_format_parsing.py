@@ -25,7 +25,7 @@ def test_tmux_applies_server_args(monkeypatch: pytest.MonkeyPatch) -> None:
     assert seen["cmd"] == ["tmux", "-L", "sock", "-S", "/tmp/t.sock", "list-sessions"]
 
 
-def test_tmuxp_uses_tmux_command_flag_for_server_args(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_tmuxp_load_passes_server_args_through(monkeypatch: pytest.MonkeyPatch) -> None:
     seen: dict[str, list[str]] = {}
 
     def fake_run(cmd: list[str], *, capture_output: bool, text: bool) -> subprocess.CompletedProcess[str]:
@@ -44,12 +44,15 @@ def test_tmuxp_uses_tmux_command_flag_for_server_args(monkeypatch: pytest.Monkey
     assert seen["cmd"] == [
         "tmuxp",
         "load",
-        "--tmux-command",
-        "tmux -L sock -S /tmp/t.sock",
+        "-L",
+        "sock",
+        "-S",
+        "/tmp/t.sock",
         "-d",
         "--yes",
         "workspace.yml",
     ]
+    assert "--tmux-command" not in seen["cmd"]
 
 
 
