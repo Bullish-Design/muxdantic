@@ -2,7 +2,7 @@
 name = "muxdantic"
 version = "0.1.0"
 description = "tmux/tmuxp orchestration contracts and CLI"
-readme = "SPEC.md"
+readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Bullish Design", email = "BullishDesignEngineering@gmail.com" }]
@@ -33,6 +33,7 @@ include = [
   "SPEC.md",
   "MUXDANTIC_CONCEPT.md",
   "pyproject.toml",
+  "README.md",
 ]
 
 [tool.pytest.ini_options]
