@@ -27,15 +27,29 @@ class MuxdanticSubprocessError(MuxdanticError):
         stderr: str | None = None,
     ) -> None:
         self.program = program
-        self.args = args
+        self.command_args = args
         self.returncode = returncode
         self.stderr = stderr
         super().__init__(self.__str__())
 
     def __str__(self) -> str:
         base = f"{self.program} failed with exit code {self.returncode}"
-        if self.args:
-            base = f"{base}: {' '.join(self.args)}"
+        if self.command_args:
+            base = f"{base}: {' '.join(self.command_args)}"
         if self.stderr:
-            return f"{base}\n{self.stderr.rstrip()}"
+            stderr = self.stderr.rstrip()
+            if stderr:
+                exit_line = f"{self.program} failed with exit code {self.returncode}"
+                for duplicate_prefix in (base, exit_line):
+                    if stderr.startswith(duplicate_prefix):
+                        stderr = stderr[len(duplicate_prefix) :]
+                        if duplicate_prefix == exit_line and self.command_args:
+                            args_suffix = f": {' '.join(self.command_args)}"
+                            if stderr.startswith(args_suffix):
+                                stderr = stderr[len(args_suffix) :]
+                        stderr = stderr.lstrip("\r\n")
+                        break
+
+                if stderr:
+                    return f"{base}\n{stderr}"
         return base
