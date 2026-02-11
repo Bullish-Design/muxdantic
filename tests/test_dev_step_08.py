@@ -20,9 +20,27 @@ class _CommandVisitor(ast.NodeVisitor):
             if cmd:
                 self.commands.add(cmd)
         elif node.args and isinstance(node.args[0], (ast.List, ast.Tuple)):
-            first = node.args[0].elts[0] if node.args[0].elts else None
-            if isinstance(first, ast.Constant) and isinstance(first.value, str):
-                self.commands.add(first.value)
+            parts = [
+                element.value
+                for element in node.args[0].elts
+                if isinstance(element, ast.Constant) and isinstance(element.value, str)
+            ]
+            cmd = " ".join(parts).strip()
+            if cmd:
+                self.commands.add(cmd)
+
+        for arg in node.args:
+            for candidate in ast.walk(arg):
+                if not isinstance(candidate, (ast.List, ast.Tuple)):
+                    continue
+                parts = [
+                    element.value
+                    for element in candidate.elts
+                    if isinstance(element, ast.Constant) and isinstance(element.value, str)
+                ]
+                cmd = " ".join(parts).strip()
+                if cmd:
+                    self.commands.add(cmd)
         self.generic_visit(node)
 
 
