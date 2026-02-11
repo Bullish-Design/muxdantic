@@ -43,14 +43,20 @@ def test_tmuxp_uses_tmux_command_flag_for_server_args(monkeypatch: pytest.Monkey
     assert out == "ok\n"
     assert seen["cmd"] == [
         "tmuxp",
+        "load",
         "--tmux-command",
         "tmux -L sock -S /tmp/t.sock",
-        "load",
         "-d",
         "--yes",
         "workspace.yml",
     ]
 
+
+
+
+def test_tmuxp_rejects_empty_args() -> None:
+    with pytest.raises(ValueError, match="subcommand"):
+        tmuxp([], TmuxServerArgs())
 
 def test_tmuxp_nonzero_raises_subprocess_error(monkeypatch: pytest.MonkeyPatch) -> None:
     def fake_run(cmd: list[str], *, capture_output: bool, text: bool) -> subprocess.CompletedProcess[str]:
