@@ -1,4 +1,4 @@
-# SKILLS/LOCKING.md — concurrency-safe ensure with file locks
+# .agent/.skills/locking/SKILL.md — concurrency-safe ensure with file locks
 
 ## Goal
 Prevent races where multiple processes try to `tmuxp load` the same session at once.

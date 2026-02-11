@@ -1,4 +1,4 @@
-# SKILLS/CLI_CONTRACT.md — CLI design & JSON output
+# .agent/.skills/cli-contract/SKILL.md — CLI design & JSON output
 
 ## Goals
 - Clear, scriptable CLI with **JSON stdout** and **stderr diagnostics**.

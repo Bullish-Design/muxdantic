@@ -1,4 +1,4 @@
-# SKILLS/LOGGING_JSONL.md — pipe-pane + Python sink
+# .agent/.skills/logging-jsonl/SKILL.md — pipe-pane + Python sink
 
 ## Goal
 When enabled, capture pane output into a durable JSONL file keyed by `job_id`.
