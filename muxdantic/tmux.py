@@ -35,9 +35,13 @@ def tmux(args: list[str], server: TmuxServerArgs) -> str:
 
 
 def tmuxp(args: list[str], server: TmuxServerArgs) -> str:
+    if not args:
+        raise ValueError("tmuxp args must include a subcommand")
+
+    subcommand, *rest = args
     tmux_command = _build_tmux_command(server)
-    cmd = ["tmuxp", "--tmux-command", tmux_command, *args]
-    return _run_command("tmuxp", cmd, ["--tmux-command", tmux_command, *args])
+    cmd = ["tmuxp", subcommand, "--tmux-command", tmux_command, *rest]
+    return _run_command("tmuxp", cmd, [subcommand, "--tmux-command", tmux_command, *rest])
 
 
 def _build_tmux_command(server: TmuxServerArgs) -> str:
