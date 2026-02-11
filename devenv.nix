@@ -3,6 +3,7 @@
 {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
+  env.MUXDANTIC_INTEGRATION = 1;
 
   # https://devenv.sh/packages/
   packages = with pkgs; [ 
