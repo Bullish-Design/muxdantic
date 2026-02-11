@@ -1,4 +1,4 @@
-# SKILLS/JOB_LIFECYCLE.md — job naming, lifecycle, and discovery
+# .agent/.skills/job-lifecycle/SKILL.md — job naming, lifecycle, and discovery
 
 ## Job identity
 A job is exactly **one tmux window**.

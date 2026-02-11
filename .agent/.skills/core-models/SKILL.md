@@ -1,4 +1,4 @@
-# SKILLS/CORE_MODELS.md — Pydantic models & validation
+# .agent/.skills/core-models/SKILL.md — Pydantic models & validation
 
 ## Goal
 Keep the library API and CLI output stable by defining explicit **Pydantic v2** models for all requests/results.

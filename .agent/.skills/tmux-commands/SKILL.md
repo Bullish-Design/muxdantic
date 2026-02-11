@@ -1,4 +1,4 @@
-# SKILLS/TMUX_COMMANDS.md — tmux/tmuxp subprocess patterns
+# .agent/.skills/tmux-commands/SKILL.md — tmux/tmuxp subprocess patterns
 
 ## Goals
 - One tiny wrapper for running `tmux` and `tmuxp` with consistent server targeting.
