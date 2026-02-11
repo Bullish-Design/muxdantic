@@ -16,6 +16,9 @@ dev = [
   "pytest>=7",
 ]
 
+[project.scripts]
+muxdantic = "muxdantic.cli:main"
+
 [build-system]
 requires = ["hatchling>=1.18"]
 build-backend = "hatchling.build"
