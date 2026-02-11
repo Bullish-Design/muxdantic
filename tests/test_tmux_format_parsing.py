@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+
 import pytest
 
 from muxdantic.errors import MuxdanticSubprocessError
@@ -22,6 +23,33 @@ def test_tmux_applies_server_args(monkeypatch: pytest.MonkeyPatch) -> None:
     out = tmux(["list-sessions"], TmuxServerArgs(socket_name="sock", socket_path="/tmp/t.sock"))
     assert out == "ok\n"
     assert seen["cmd"] == ["tmux", "-L", "sock", "-S", "/tmp/t.sock", "list-sessions"]
+
+
+def test_tmuxp_uses_tmux_command_flag_for_server_args(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, list[str]] = {}
+
+    def fake_run(cmd: list[str], *, capture_output: bool, text: bool) -> subprocess.CompletedProcess[str]:
+        seen["cmd"] = cmd
+        assert capture_output is True
+        assert text is True
+        return subprocess.CompletedProcess(cmd, 0, stdout="ok\n", stderr="")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    out = tmuxp(
+        ["load", "-d", "--yes", "workspace.yml"],
+        TmuxServerArgs(socket_name="sock", socket_path="/tmp/t.sock"),
+    )
+    assert out == "ok\n"
+    assert seen["cmd"] == [
+        "tmuxp",
+        "--tmux-command",
+        "tmux -L sock -S /tmp/t.sock",
+        "load",
+        "-d",
+        "--yes",
+        "workspace.yml",
+    ]
 
 
 def test_tmuxp_nonzero_raises_subprocess_error(monkeypatch: pytest.MonkeyPatch) -> None:
