@@ -1,4 +1,4 @@
-# SKILLS/WORKSPACE_RESOLUTION.md — deterministic workspace resolution
+# .agent/.skills/workspace-resolution/SKILL.md — deterministic workspace resolution
 
 ## Inputs accepted
 - A direct tmuxp config file path, OR

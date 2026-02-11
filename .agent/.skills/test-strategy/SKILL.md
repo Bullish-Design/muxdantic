@@ -1,4 +1,4 @@
-# SKILLS/TEST_STRATEGY.md — unit + (optional) integration tests
+# .agent/.skills/test-strategy/SKILL.md — unit + (optional) integration tests
 
 ## Unit tests (default)
 - Tag sanitization: edge cases, invalid-only tags, trimming.

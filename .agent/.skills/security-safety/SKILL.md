@@ -1,4 +1,4 @@
-# SKILLS/SECURITY_SAFETY.md — sanitization, quoting, and sharp edges
+# .agent/.skills/security-safety/SKILL.md — sanitization, quoting, and sharp edges
 
 ## Threat model (lightweight)
 muxdantic is for local dev orchestration, but still avoid obvious foot-guns:
