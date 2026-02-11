@@ -2,23 +2,12 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-_TAG_ALLOWED = re.compile(r"[^a-zA-Z0-9._-]+")
-
-
-def sanitize_tag(tag: str) -> str:
-    """Normalize tags used in job identifiers/window names."""
-    normalized = _TAG_ALLOWED.sub("-", tag.strip().lower())
-    normalized = re.sub(r"-+", "-", normalized).strip("-._")
-    if not normalized:
-        raise ValueError("tag must contain at least one alphanumeric character")
-    return normalized
-
+from muxdantic.tags import sanitize_tag
 
 class TmuxServerArgs(BaseModel):
     """Arguments that target a tmux server."""
