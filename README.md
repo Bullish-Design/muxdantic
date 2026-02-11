@@ -9,6 +9,8 @@
 
 tmux remains the runtime and source of truth. muxdantic is the glue layer.
 
+Need to look at a generic cli command wrapper library for consistent in/out to the shell. I have to be missing something obvious here. 
+
 ## Installation
 
 ```bash
